@@ -2,22 +2,29 @@
 
 set -ouex pipefail
 
-RELEASE="$(rpm -E %fedora)"
+# Install keyd
+FEDORA_VERSION=$(rpm -E %fedora)
+curl -o /etc/yum.repos.d/_copr:alternateved:keyd.repo https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-"$FEDORA_VERSION"/alternateved-keyd-fedora-"$FEDORA_VERSION".repo
+rpm-ostree install keyd
+systemctl enable keyd
 
+# Install keyboard configuration
+mkdir -p /etc/keyd
+cp /tmp/cros.conf /etc/keyd
 
-### Install packages
+git clone https://github.com/WeirdTreeThing/cros-keyboard-map /tmp/cros-keyboard-map
+mkdir -p /etc/libinput
+cp /tmp/cros-keyboard-map/local-overrides.quirks /etc/libinput/local-overrides.quirks
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
+# Install SOF
+git clone https://github.com/WeirdTreeThing/chromebook-linux-audio /tmp/chromebook-linux-audio
+cp -r /tmp/chromebook-linux-audio/conf/sof/tplg /lib/firmware/intel/sof-tplg
 
-# this installs a package from fedora repos
-rpm-ostree install screen
-
-# this would install a package from rpmfusion
-# rpm-ostree install vlc
-
-#### Example for enabling a System Unit File
-
-systemctl enable podman.socket
+# Install UCM configuration
+git clone https://github.com/WeirdTreeThing/chromebook-ucm-conf /tmp/chromebook-ucm-conf
+cp -r /tmp/chromebook-ucm-conf/cml /usr/share/alsa/ucm2/conf.d
+cp -r /tmp/chromebook-ucm-conf/common /usr/share/alsa/ucm2/common
+cp -r /tmp/chromebook-ucm-conf/codecs /usr/share/alsa/ucm2/codecs
+cp -r /tmp/chromebook-ucm-conf/platforms /usr/share/alsa/ucm2/platforms
+cp -r /tmp/chromebook-ucm-conf/sof-rt5682 /usr/share/alsa/ucm2/conf.d/sof-rt5682
+cp -r /tmp/chromebook-ucm-conf/sof-cs42l42 /usr/share/alsa/ucm2/conf.d/sof-cs42l42
