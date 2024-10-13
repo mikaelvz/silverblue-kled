@@ -5,7 +5,7 @@ This is a custom [Universal Blue](https://universal-blue.org/) image for the Ace
 The main purpose is to bring the Silverblue [Fedora Atomic Desktop](https://fedoraproject.org/atomic-desktops/) to this device making audio and the keyboard works out of the box.
 
 > [!NOTE]
-> It ==may== work for others Chromebook Comet Lake devices for the audio part, the keyboard part may required some tweaking.
+> It **_could_** work for others Chromebook Comet Lake devices for the audio part, the keyboard part may required some tweaking.
 
 # How It works
 
@@ -23,19 +23,27 @@ The ISO is available [here](https://fedoraproject.org/atomic-desktops/silverblue
 
 ## Rebase to the unsigned variant of the base image
 
-> rpm-ostree rebase ostree-unverified-registry:ghcr.io/mikaelvz/silverblue-kled:latest
+```
+rpm-ostree rebase ostree-unverified-registry:ghcr.io/mikaelvz/silverblue-kled:latest
+```
 
 ### Reboot
 
-> systemctl reboot
+```
+systemctl reboot
+```
 
 ## Rebase to the signed variant of the image
 
-> rpm-ostree rebase ostree-image-signed:docker://ghcr.io/mikaelvz/silverblue-kled:latest
+```
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/mikaelvz/silverblue-kled:latest
+```
 
 ### Reboot
 
-> systemctl reboot
+```
+systemctl reboot
+```
 
 [^1]: Maintained by [@ublue-os](https://github.com/ublue-os) team
 [^2]: Maintained by [@rvaiya](https://github.com/rvaiya)
