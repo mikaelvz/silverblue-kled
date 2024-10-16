@@ -32,3 +32,7 @@ cp -r /tmp/chromebook-ucm-conf/sof-rt5682/* /usr/share/alsa/ucm2/conf.d/sof-rt56
 
 mkdir -p /usr/share/alsa/ucm2/conf.d/sof-cs42l42
 cp -r /tmp/chromebook-ucm-conf/sof-cs42l42/* /usr/share/alsa/ucm2/conf.d/sof-cs42l42
+
+# Install ectool
+curl -fL https://files.tree123.org/utils/x86_64/gnu/ectool -o /usr/bin/ectool
+chmod a+x /usr/bin/ectool
