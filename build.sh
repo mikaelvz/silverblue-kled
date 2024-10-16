@@ -36,3 +36,5 @@ cp -r /tmp/chromebook-ucm-conf/sof-cs42l42/* /usr/share/alsa/ucm2/conf.d/sof-cs4
 # Install ectool
 curl -fL https://files.tree123.org/utils/x86_64/gnu/ectool -o /usr/bin/ectool
 chmod a+x /usr/bin/ectool
+
+systemctl enable ectool-fanspeed
