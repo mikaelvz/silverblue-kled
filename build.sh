@@ -4,7 +4,7 @@ set -ouex pipefail
 
 # Install keyd
 FEDORA_VERSION=$(rpm -E %fedora)
-curl -o /etc/yum.repos.d/_copr:alternateved:keyd.repo https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-"$FEDORA_VERSION"/alternateved-keyd-fedora-"$FEDORA_VERSION".repo
+curl -fL https://copr.fedorainfracloud.org/coprs/alternateved/keyd/repo/fedora-"$FEDORA_VERSION"/alternateved-keyd-fedora-"$FEDORA_VERSION".repo -o /etc/yum.repos.d/_copr:alternateved:keyd.repo
 rpm-ostree install keyd
 systemctl enable keyd
 
@@ -32,3 +32,9 @@ cp -r /tmp/chromebook-ucm-conf/sof-rt5682/* /usr/share/alsa/ucm2/conf.d/sof-rt56
 
 mkdir -p /usr/share/alsa/ucm2/conf.d/sof-cs42l42
 cp -r /tmp/chromebook-ucm-conf/sof-cs42l42/* /usr/share/alsa/ucm2/conf.d/sof-cs42l42
+
+# Install ectool
+curl -fL https://files.tree123.org/utils/x86_64/gnu/ectool -o /usr/bin/ectool
+chmod a+x /usr/bin/ectool
+
+systemctl enable ectool-fanspeed
