@@ -50,7 +50,7 @@ FROM ghcr.io/ublue-os/${SOURCE_IMAGE}${SOURCE_SUFFIX}:${SOURCE_TAG}
 
 COPY system_files/overrides /
 
-COPY cros.conf build.sh /tmp
+COPY cros.conf /tmp
 
 RUN mkdir -p /var/lib/alternatives && \
     /tmp/build.sh && \
