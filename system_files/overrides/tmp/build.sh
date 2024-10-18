@@ -9,9 +9,6 @@ rpm-ostree install keyd
 systemctl enable keyd
 
 # Install keyboard configuration
-mkdir -p /etc/keyd
-cp /tmp/cros.conf /etc/keyd
-
 git clone https://github.com/WeirdTreeThing/cros-keyboard-map /tmp/cros-keyboard-map
 mkdir -p /etc/libinput
 cp /tmp/cros-keyboard-map/local-overrides.quirks /etc/libinput/local-overrides.quirks
