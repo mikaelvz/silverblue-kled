@@ -3,8 +3,7 @@
 # Tell build process to exit if there are any errors.
 set -euo pipefail
 
-IMAGE_NAME="silverblue-kled-test"
-IMAGE_REGISTRY="ghcr.io/mikaelvz"
+IMAGE_NAME="${MY_IMAGE_NAME}"
 
 # Don't migrate this module from utilizing `/usr/etc/` to `/etc/` yet, as Ublue needs to solve this issue
 # https://github.com/ublue-os/config/pull/311
