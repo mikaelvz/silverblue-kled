@@ -3,6 +3,9 @@
 # Tell build process to exit if there are any errors.
 set -euo pipefail
 
+IMAGE_NAME="silverblue-kled-test"
+IMAGE_REGISTRY="ghcr.io/mikaelvz"
+
 CONTAINER_DIR="/usr/etc/containers"
 MODULE_DIRECTORY="${MODULE_DIRECTORY:-"/tmp/modules"}"
 IMAGE_NAME_FILE="${IMAGE_NAME//\//_}"
