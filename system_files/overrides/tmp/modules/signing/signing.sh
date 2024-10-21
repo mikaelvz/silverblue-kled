@@ -6,10 +6,11 @@ set -euo pipefail
 IMAGE_NAME="silverblue-kled-test"
 IMAGE_REGISTRY="ghcr.io/mikaelvz"
 
+# Don't migrate this module from utilizing `/usr/etc/` to `/etc/` yet, as Ublue needs to solve this issue
+# https://github.com/ublue-os/config/pull/311
 CONTAINER_DIR="/usr/etc/containers"
 MODULE_DIRECTORY="${MODULE_DIRECTORY:-"/tmp/modules"}"
 IMAGE_NAME_FILE="${IMAGE_NAME//\//_}"
-IMAGE_REGISTRY_TITLE=$(echo "$IMAGE_REGISTRY" | cut -d'/' -f2-)
 
 echo "Setting up container signing in policy.json and cosign.yaml for $IMAGE_NAME"
 echo "Registry to write: $IMAGE_REGISTRY"
@@ -30,15 +31,21 @@ if ! [ -f "$CONTAINER_DIR/policy.json" ]; then
     cp "$MODULE_DIRECTORY/signing/policy.json" "$CONTAINER_DIR/policy.json"
 fi
 
-mv "/usr/etc/pki/containers/$IMAGE_NAME.pub" "/usr/etc/pki/containers/$IMAGE_REGISTRY_TITLE.pub"
+if ! [ -f "/usr/etc/pki/containers/$IMAGE_NAME_FILE.pub" ]; then
+    cp "/usr/share/ublue-os/cosign.pub" "/usr/etc/pki/containers/$IMAGE_NAME_FILE.pub"
+fi
 
 POLICY_FILE="$CONTAINER_DIR/policy.json"
 
+if ! [ -x "$(command -v yq)" ]; then
+    rpm-ostree install yq
+fi
+
 yq -i -o=j '.transports.docker |=
-    {"'"$IMAGE_REGISTRY"'": [
+    {"'"$IMAGE_REGISTRY"'/'"$IMAGE_NAME"'": [
             {
                 "type": "sigstoreSigned",
-                "keyPath": "/usr/etc/pki/containers/'"$IMAGE_REGISTRY_TITLE"'.pub",
+                "keyPath": "/etc/pki/containers/'"$IMAGE_NAME_FILE"'.pub",
                 "signedIdentity": {
                     "type": "matchRepository"
                 }
@@ -47,5 +54,5 @@ yq -i -o=j '.transports.docker |=
     }
 + .' "$POLICY_FILE"
 
-mv "$MODULE_DIRECTORY/signing/registry-config.yaml" "$CONTAINER_DIR/registries.d/$IMAGE_REGISTRY_TITLE.yaml"
-sed -i "s ghcr.io/IMAGENAME $IMAGE_REGISTRY g" "$CONTAINER_DIR/registries.d/$IMAGE_REGISTRY_TITLE.yaml"
+mv "$MODULE_DIRECTORY/signing/registry-config.yaml" "$CONTAINER_DIR/registries.d/$IMAGE_NAME_FILE.yaml"
+sed -i "s ghcr.io/IMAGENAME $IMAGE_REGISTRY g" "$CONTAINER_DIR/registries.d/$IMAGE_NAME_FILE.yaml"
