@@ -11,7 +11,5 @@ COPY cosign.pub /usr/etc/pki/containers/${IMAGE_NAME}.pub
 
 RUN mkdir -p /var/lib/alternatives && \
     # Signing
-    rpm-ostree install yq && \
-    MODULE_DIRECTORY="/tmp/scripts" \
     /tmp/scripts/signing.sh && \
     ostree container commit
