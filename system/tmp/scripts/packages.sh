@@ -16,6 +16,8 @@ libavutil-free  \
 libpostproc-free \
 libswresample-free \
 libswscale-free \
+firefox \
+firefox-langpacks \
 --install=libheif-freeworld \
 --install=libheif-tools \
 --install=intel-media-driver \
