@@ -12,4 +12,5 @@ export SCRIPTS_DIRECTORY="$(dirname "$0")/scripts"
 .$SCRIPTS_DIRECTORY/rpmfusion.sh
 .$SCRIPTS_DIRECTORY/packages.sh
 .$SCRIPTS_DIRECTORY/keyd.sh
+.$SCRIPTS_DIRECTORY/chromebook-audio.sh
 .$SCRIPTS_DIRECTORY/signing.sh
