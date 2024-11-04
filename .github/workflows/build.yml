@@ -78,7 +78,7 @@ jobs:
 
       - name: Get current version
         id: labels
-        uses: Wandalen/wretry.action@v3.5.0
+        uses: Wandalen/wretry.action@v3.7.0
         with:
           attempt_limit: 3
           attempt_delay: 15000
